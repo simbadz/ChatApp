@@ -77,6 +77,9 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.bundles.retrofit)
 
+
+    implementation(libs.kjwt.core)
+
 }
 
 

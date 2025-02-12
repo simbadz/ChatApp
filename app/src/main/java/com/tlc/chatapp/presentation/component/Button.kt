@@ -23,7 +23,7 @@ fun StyledButton (
         colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
     ) {
         Box(
-            modifier = Modifier.padding(horizontal = 60.dp, vertical = 3.dp)
+            modifier = Modifier.padding(horizontal = 40.dp, vertical = 3.dp)
         ) {
             content()
         }
