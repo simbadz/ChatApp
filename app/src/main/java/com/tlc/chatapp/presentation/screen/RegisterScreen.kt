@@ -22,7 +22,6 @@ import com.tlc.chatapp.presentation.navigation.Screen
 import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
 import com.tlc.chatapp.presentation.screen.state.RegisterScreenState
 import com.tlc.chatapp.presentation.screen.viewModel.RegisterScreenViewModel
-import org.w3c.dom.Text
 
 @Composable
 fun RegisterScreen(
