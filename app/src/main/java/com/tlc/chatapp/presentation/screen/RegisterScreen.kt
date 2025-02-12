@@ -12,6 +12,7 @@ fun RegisterScreen(
     onNavigateTo: (Screen) -> Unit
 ) {
     Column(
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

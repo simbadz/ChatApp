@@ -1,5 +1,7 @@
 package com.tlc.chatapp.presentation.component
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,6 +22,11 @@ fun StyledButton (
         shape = RoundedCornerShape(15.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
     ) {
-        content()
+        Box(
+            modifier = Modifier.padding(horizontal = 60.dp, vertical = 3.dp)
+        ) {
+            content()
+        }
+
     }
 }

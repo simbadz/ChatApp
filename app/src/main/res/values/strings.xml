@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ChatApp</string>
     <string name="enter_phone_number">Номер телефона</string>
+    <string name="enter_sms">Введите код</string>
+    <string name="no_account_register">Зарегистрируйтесь</string>
+    <string name="next">Продолжить</string>
 </resources>
