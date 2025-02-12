@@ -1,4 +1,4 @@
-package com.tlc.chatapp.ui.theme
+package com.tlc.chatapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

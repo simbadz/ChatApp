@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ChatApp</string>
+    <string name="enter_phone_number">Номер телефона</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.tlc.chatapp.ui.theme
+package com.tlc.chatapp.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
