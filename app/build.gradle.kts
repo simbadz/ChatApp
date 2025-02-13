@@ -80,6 +80,15 @@ dependencies {
 
     implementation(libs.kjwt.core)
 
+
+    implementation(libs.logging.interceptor)
+
+    implementation(libs.androidx.datastore.preferences)
+
+
+
+
+
 }
 
 
