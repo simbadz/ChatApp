@@ -27,6 +27,5 @@ fun StyledButton (
         ) {
             content()
         }
-
     }
 }

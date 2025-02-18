@@ -1,4 +1,4 @@
-package com.tlc.chatapp.auth
+package com.tlc.chatapp.data.auth
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

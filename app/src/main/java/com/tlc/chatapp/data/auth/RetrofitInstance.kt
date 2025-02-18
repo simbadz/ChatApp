@@ -1,5 +1,6 @@
-package com.tlc.chatapp.auth
+package com.tlc.chatapp.data.auth
 
+import com.tlc.chatapp.data.api.AuthApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,7 +14,7 @@ object RetrofitInstance {
 
     val api: AuthApi by lazy {
         Retrofit.Builder()
-            .baseUrl("https://plannerok.ru/")
+            .baseUrl("https://plannerok.ru/api/v1/users/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

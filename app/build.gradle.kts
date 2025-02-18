@@ -61,14 +61,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    // Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 
+    // Room
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    // Glide
     implementation(libs.glide)
 
     implementation(libs.kotlinx.serialization)
@@ -77,7 +81,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.bundles.retrofit)
 
-
+    // JWT
     implementation(libs.kjwt.core)
 
 
