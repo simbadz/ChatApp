@@ -5,22 +5,38 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlc.chatapp.data.api.PhoneRequest
 import com.tlc.chatapp.data.auth.AuthState
-import com.tlc.chatapp.data.auth.DataStoreManager
 import com.tlc.chatapp.data.auth.RetrofitInstance
 import kotlinx.coroutines.launch
 
-class LoginScreenViewModel (
-    private val dataStore  : DataStoreManager
-) {
+
+class LoginScreenViewModel: ViewModel() {
+    var number by mutableStateOf("")
+        private set
+
+    var code by mutableStateOf("")
+        private set
+
+    fun updateNumber(number: String) {
+        this.number = number
+    }
+
+    fun updateCode(code: String) {
+        this.code = code
+    }
+
 
     private val api = RetrofitInstance.api
 
-
     private val _authState = MutableLiveData<AuthState>(AuthState.Idle)
     val authState: LiveData<AuthState> = _authState
+
+
+
+
 
     fun sendPhone(phone: String) {
         viewModelScope.launch {
@@ -30,27 +46,12 @@ class LoginScreenViewModel (
                 if (response.message == "SMS sent") {
                     _authState.value = AuthState.CodeSent(phone)
                 } else {
-                    _authState.value = AuthState.Error("Ошибка отправки")
+                    _authState.value = AuthState.Error("Ошибка отправки: ${response.message}")
                 }
             } catch (e: Exception) {
-                _authState.value = AuthState.Error("Ошибка сети")
+                _authState.value = AuthState.Error("Ошибка сети: ${e.message}")
             }
         }
-    }
-
-
-    var number by mutableStateOf("")
-    private set
-
-    var code by mutableStateOf("")
-    private set
-
-    fun updateNumber(number: String) {
-        this.number = number
-    }
-
-    fun enterCode(number: String) {
-        this.code = code
     }
 
     sealed class AuthState {
@@ -61,4 +62,6 @@ class LoginScreenViewModel (
         object Success : AuthState()
     }
 }
+
+
 

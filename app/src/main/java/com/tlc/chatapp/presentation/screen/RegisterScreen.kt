@@ -35,7 +35,6 @@ fun RegisterScreen(
     )
 }
 
-
 @Composable
 fun RegisterView(
     state: RegisterScreenState = RegisterScreenState(),
@@ -48,28 +47,12 @@ fun RegisterView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            modifier = androidx.compose.ui.Modifier
-                .padding(top = 150.dp),
+            modifier = Modifier.padding(top = 150.dp),
             text = stringResource(id = R.string.app_name),
             fontSize = 30.sp
         )
         OutlinedTextField(
-            modifier = Modifier
-                .padding(top = 150.dp),
-            enabled = false,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            ),
-            value = state.username,
-            onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.UserNameUpdated(newValue))
-            },
-//            placeholder = {
-//                Text(text = stringResource(id = R.string.enter_sms))
-//            }
-        )
-        OutlinedTextField(
-            modifier = Modifier.padding(top = 20.dp),
+            modifier = Modifier.padding(top = 150.dp),
             value = state.username,
             onValueChange = { newValue ->
                 onEvent(RegisterScreenEvent.UserNameUpdated(newValue))
@@ -78,24 +61,33 @@ fun RegisterView(
                 Text(text = stringResource(id = R.string.username))
             }
         )
+        OutlinedTextField(
+            modifier = Modifier.padding(top = 20.dp),
+            value = state.password,
+            onValueChange = { newValue ->
+                onEvent(RegisterScreenEvent.PasswordUpdated(newValue)) },
+            placeholder = {
+                Text(text = stringResource(id = R.string.enter_sms))
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+        )
         StyledButton(
-            modifier = Modifier
-                .padding(top = 20.dp),
-            onClick = {onNavigateTo(Screen.Register)}
+            modifier = Modifier.padding(top = 20.dp),
+            onClick = {
+                onNavigateTo(Screen.Login)
+            }
         ) {
             Text(
-                modifier = Modifier,
                 text = stringResource(id = R.string.register),
                 fontSize = 19.sp,
-                color = Color.Black,
+                color = Color.Black
             )
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
-    RegisterView ()
+    RegisterView()
 }
