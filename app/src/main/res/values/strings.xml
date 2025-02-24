@@ -4,6 +4,6 @@
     <string name="enter_sms">Введите код</string>
     <string name="username">Имя пользователя</string>
     <string name="no_account_register">Зарегистрируйтесь</string>
-    <string name="next">Продолжить</string>
+    <string name="next">Войти</string>
     <string name="register">Зарегистрироваться</string>
 </resources>

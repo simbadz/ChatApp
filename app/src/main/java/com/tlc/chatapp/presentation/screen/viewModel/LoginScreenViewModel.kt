@@ -7,8 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlc.chatapp.data.api.PhoneRequest
-import com.tlc.chatapp.data.auth.AuthState
+import com.tlc.chatapp.data.auth.PhoneRequest
 import com.tlc.chatapp.data.auth.RetrofitInstance
 import kotlinx.coroutines.launch
 
@@ -43,7 +42,7 @@ class LoginScreenViewModel: ViewModel() {
             _authState.value = AuthState.Loading
             try {
                 val response = api.sendPhone(PhoneRequest(phone))
-                if (response.message == "SMS sent") {
+                if (response.phone == "SMS sent") {
                     _authState.value = AuthState.CodeSent(phone)
                 } else {
                     _authState.value = AuthState.Error("Ошибка отправки: ${response.message}")

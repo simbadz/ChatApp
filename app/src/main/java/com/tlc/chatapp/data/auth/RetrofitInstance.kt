@@ -1,6 +1,5 @@
 package com.tlc.chatapp.data.auth
 
-import com.tlc.chatapp.data.api.AuthApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

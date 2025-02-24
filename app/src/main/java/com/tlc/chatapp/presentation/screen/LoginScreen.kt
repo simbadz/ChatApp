@@ -25,6 +25,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlc.chatapp.R
 import com.tlc.chatapp.presentation.component.StyledButton
 import com.tlc.chatapp.presentation.navigation.Screen
+import com.tlc.chatapp.presentation.screen.state.LoginScreenEvent
+import com.tlc.chatapp.presentation.screen.state.LoginScreenState
+import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
 import com.tlc.chatapp.presentation.screen.viewModel.LoginScreenViewModel
 import com.tlc.chatapp.presentation.ui.theme.PrimaryPinkBlended
 import com.tlc.chatapp.presentation.ui.theme.PrimaryYellow
@@ -32,7 +35,9 @@ import com.tlc.chatapp.presentation.ui.theme.PrimaryYellowLight
 
 @Composable
 fun LoginScreen(
+    state: LoginScreenState = LoginScreenState(),
     onNavigateTo: (Screen) -> Unit = {},
+    onEvent: (LoginScreenEvent) -> Unit = {},
     viewModel: LoginScreenViewModel = viewModel()
 ) {
     Column(
@@ -45,52 +50,58 @@ fun LoginScreen(
 //                    1f to PrimaryYellow
 //                )
 //            )
-                    .systemBarsPadding()
-        ,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(top = 150.dp),
-                    text = stringResource(id = R.string.app_name),
-                    fontSize = 30.sp
+            .systemBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(top = 150.dp),
+            text = stringResource(id = R.string.app_name),
+            fontSize = 30.sp
 
-                )
-                Image(
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                        .size(100.dp),
-                    painter = painterResource(id = R.drawable.login_app_image),
-                    contentDescription = "Chat app login image"
-                )
-
-
-                OutlinedTextField(
-                    modifier = Modifier.padding(top = 150.dp),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    value = viewModel.number,
-                    onValueChange = viewModel::updateNumber,
-                    placeholder = {
-                        Text(text = stringResource(id = R.string.enter_phone_number))
-                    }
-
-                )
-
-                StyledButton(
-                    modifier = Modifier
-                        .padding(top = 20.dp),
-                    onClick = { onNavigateTo(Screen.Register) }
-                ) {
-                    Text(
-                        modifier = Modifier,
-                        text = stringResource(id = R.string.next),
-                        fontSize = 19.sp,
-                        color = Color.Black,
-                    )
-                }
+        )
+        Image(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .size(100.dp),
+            painter = painterResource(id = R.drawable.login_app_image),
+            contentDescription = "Chat app login image"
+        )
+        OutlinedTextField(
+            modifier = Modifier.padding(top = 80.dp),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            value = viewModel.number,
+            onValueChange = viewModel::updateNumber,
+            placeholder = {
+                Text(text = stringResource(id = R.string.enter_phone_number))
             }
+
+        )
+        OutlinedTextField(
+            modifier = Modifier.padding(top = 20.dp),
+            value = viewModel.code,
+            onValueChange = viewModel::updateCode,
+            placeholder = {
+                Text(text = stringResource(id = R.string.enter_sms))
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword)
+        )
+
+        StyledButton(
+            modifier = Modifier
+                .padding(top = 20.dp),
+            onClick = { onNavigateTo(Screen.Register) }
+        ) {
+            Text(
+                modifier = Modifier,
+                text = stringResource(id = R.string.next),
+                fontSize = 19.sp,
+                color = Color.Black,
+            )
+        }
+    }
 }
 
 
