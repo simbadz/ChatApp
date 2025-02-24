@@ -2,6 +2,7 @@ package com.tlc.chatapp.presentation.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -55,7 +56,7 @@ fun LoginScreen(
     ) {
         Text(
             modifier = Modifier
-                .padding(top = 150.dp),
+                .padding(top = 120.dp),
             text = stringResource(id = R.string.app_name),
             fontSize = 30.sp
 
@@ -68,7 +69,7 @@ fun LoginScreen(
             contentDescription = "Chat app login image"
         )
         OutlinedTextField(
-            modifier = Modifier.padding(top = 80.dp),
+            modifier = Modifier.padding(top = 60.dp),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
@@ -92,7 +93,7 @@ fun LoginScreen(
         StyledButton(
             modifier = Modifier
                 .padding(top = 20.dp),
-            onClick = { onNavigateTo(Screen.Register) }
+            onClick = {  }
         ) {
             Text(
                 modifier = Modifier,
@@ -101,6 +102,15 @@ fun LoginScreen(
                 color = Color.Black,
             )
         }
+        Text(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .clickable { onNavigateTo(Screen.Register) },
+            text = stringResource(id = R.string.register),
+            fontSize = 14.sp
+
+
+        )
     }
 }
 
