@@ -2,6 +2,11 @@ package com.tlc.chatapp.data.auth
 
 import android.content.SharedPreferences
 import coil.network.HttpException
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 class AuthRepositoryImpl(

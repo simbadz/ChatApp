@@ -3,16 +3,12 @@ package com.tlc.chatapp.presentation.screen.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlc.chatapp.data.auth.AuthRepository
 import com.tlc.chatapp.data.auth.AuthResult
-import com.tlc.chatapp.data.auth.PhoneRequest
-import com.tlc.chatapp.data.auth.RetrofitInstance
-import com.tlc.chatapp.presentation.screen.state.LoginScreenState
-import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
+import com.tlc.chatapp.data.auth.AuthState
+import com.tlc.chatapp.presentation.screen.state.LoginScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,80 +16,130 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-//@HiltViewModel
-//class LoginScreenViewModel @Inject constructor(
-//    private val repository: AuthRepository
-//) : ViewModel() {
-//    var state by mutableStateOf(LoginScreenState())
-//
-//        private val resultChannel = Channel<AuthResult<Unit>> ()
-//    val authResults = resultChannel.receiveAsFlow()
-//
-//    init {
-//
-//    }
-//
-//    fun onEvent(event: RegisterScreenEvent) {
-//        when (event) {
-//            is RegisterScreenEvent.UserNameUpdated -> {
-//                state = state.copy(username = event.newUserName)
-//            }
-//
-//            is RegisterScreenEvent.PhoneUpdated -> {
-//                state = state.copy(phone = event.newPhone)
-//            }
-//
-//            is RegisterScreenEvent.PasswordUpdated -> {
-//                state = state.copy(password = event.newPassword)
-//            }
-//        }
-//    }
-//}
+@HiltViewModel
+class LoginScreenViewModel @Inject constructor(
+    private val repository: AuthRepository
+) : ViewModel() {
+    var state by mutableStateOf(AuthState())
 
+    private val resultChannel = Channel<AuthResult<Unit>>()
+    val authResults = resultChannel.receiveAsFlow()
 
-class LoginScreenViewModel: ViewModel() {
-    var number by mutableStateOf("")
-        private set
-
-    var code by mutableStateOf("")
-        private set
-
-    var phone by mutableStateOf("")
-        private set
-
-    fun updateNumber(number: String) {
-        this.number = number
+    init {
+        authenticate()
     }
 
-    fun updateCode(code: String) {
-        this.code = code
-    }
-
-
-    private val api = RetrofitInstance.api
-
-    private val _authState = MutableLiveData<AuthState>(AuthState.Idle)
-    val authState: LiveData<AuthState> = _authState
-
-
-
-
-
-    fun sendPhone(phone: String) {
-        viewModelScope.launch {
-            _authState.value = AuthState.Loading
-
+    fun onEvent(event: LoginScreenEvent) {
+        when (event) {
+            is LoginScreenEvent.SignInUsernameChanged -> {
+                state = state.copy(signInUsername = event.value)
             }
+
+            is LoginScreenEvent.SignInPasswordChanged -> {
+                state = state.copy(signInPassword = event.value)
+            }
+
+            is LoginScreenEvent.SignIn -> {
+                signIn()
+            }
+
+            is LoginScreenEvent.SignUpUsernameChanged -> {
+                state = state.copy(signUpUsername = event.value)
+            }
+
+            is LoginScreenEvent.SignUpPasswordChanged -> {
+                state = state.copy(signUpPassword = event.value)
+            }
+
+            LoginScreenEvent.SignUp -> {
+                signUp()
+            }
+        }
+
+    }
+
+    private fun signUp() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.register(
+                phone = state.signUpUsername,
+                name = state.signUpPassword,
+                username = state.signUpName
+            )
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+
         }
     }
 
-    sealed class AuthState {
-        object Idle : AuthState()
-        object Loading : AuthState()
-        data class CodeSent(val phone: String) : AuthState()
-        data class Error(val message: String) : AuthState()
-        object Success : AuthState()
+    private fun signIn() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.verifyCode(
+                phone = state.signInUsername,
+                code = state.signUpPassword
+            )
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+
+        }
     }
+
+    private fun authenticate() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.authenticate()
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+
+        }
+    }
+}
+
+
+//class LoginScreenViewModel: ViewModel() {
+//    var number by mutableStateOf("")
+//        private set
+//
+//    var code by mutableStateOf("")
+//        private set
+//
+//    var phone by mutableStateOf("")
+//        private set
+//
+//    fun updateNumber(number: String) {
+//        this.number = number
+//    }
+//
+//    fun updateCode(code: String) {
+//        this.code = code
+//    }
+//
+//
+//    private val api = RetrofitInstance.api
+//
+//    private val _authState = MutableLiveData<AuthState>(AuthState.Idle)
+//    val authState: LiveData<AuthState> = _authState
+//
+//
+//
+//
+//
+//    fun sendPhone(phone: String) {
+//        viewModelScope.launch {
+//            _authState.value = AuthState.Loading
+//
+//            }
+//        }
+//    }
+//
+//    sealed class AuthState {
+//        object Idle : AuthState()
+//        object Loading : AuthState()
+//        data class CodeSent(val phone: String) : AuthState()
+//        data class Error(val message: String) : AuthState()
+//        object Success : AuthState()
+//    }
 
 
 

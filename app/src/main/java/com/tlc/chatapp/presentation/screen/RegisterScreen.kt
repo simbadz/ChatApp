@@ -15,10 +15,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlc.chatapp.R
 import com.tlc.chatapp.presentation.component.StyledButton
 import com.tlc.chatapp.presentation.navigation.Screen
+import com.tlc.chatapp.presentation.screen.state.LoginScreenState
 import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
 import com.tlc.chatapp.presentation.screen.state.RegisterScreenState
 import com.tlc.chatapp.presentation.screen.viewModel.RegisterScreenViewModel
@@ -40,7 +42,7 @@ fun RegisterView(
     state: RegisterScreenState = RegisterScreenState(),
     onEvent: (RegisterScreenEvent) -> Unit = {},
     onNavigateTo: (Screen) -> Unit = {}
-) {
+)  {
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -53,12 +55,24 @@ fun RegisterView(
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 150.dp),
+            value = state.phone,
+            enabled = false,
+            onValueChange = { newValue ->
+                onEvent(RegisterScreenEvent.PhoneUpdated(newPhone = ""))
+            },
+            placeholder = {
+                Text(text = stringResource(id = R.string.enter_phone_number))
+            }
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.padding(top = 20.dp),
             value = state.username,
             onValueChange = { newValue ->
                 onEvent(RegisterScreenEvent.UserNameUpdated(newValue))
             },
             placeholder = {
-                Text(text = stringResource(id = R.string.username))
+                Text(text = stringResource(id = R.string.name))
             }
         )
         OutlinedTextField(
@@ -67,7 +81,7 @@ fun RegisterView(
             onValueChange = { newValue ->
                 onEvent(RegisterScreenEvent.PasswordUpdated(newValue)) },
             placeholder = {
-                Text(text = stringResource(id = R.string.enter_sms))
+                Text(text = stringResource(id = R.string.username))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )

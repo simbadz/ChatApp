@@ -1,5 +1,6 @@
 package com.tlc.chatapp.presentation.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,18 +13,25 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestinationDsl
+import androidx.navigation.Navigator
 import com.tlc.chatapp.R
+import com.tlc.chatapp.data.auth.AuthRepository
+import com.tlc.chatapp.data.auth.AuthResult
 import com.tlc.chatapp.presentation.component.StyledButton
 import com.tlc.chatapp.presentation.navigation.Screen
 import com.tlc.chatapp.presentation.screen.state.LoginScreenEvent
@@ -36,11 +44,39 @@ import com.tlc.chatapp.presentation.ui.theme.PrimaryYellowLight
 
 @Composable
 fun LoginScreen(
-    state: LoginScreenState = LoginScreenState(),
+//    state: LoginScreenState = LoginScreenState(),
     onNavigateTo: (Screen) -> Unit = {},
     onEvent: (LoginScreenEvent) -> Unit = {},
-    viewModel: LoginScreenViewModel = viewModel()
+    viewModel: LoginScreenViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state
+    val context = LocalContext.current
+    LaunchedEffect(viewModel, context) {
+        viewModel.authResults.collect { result ->
+            when (result) {
+                is AuthResult.Authorized -> {
+                    onNavigateTo(Screen.Main)
+                }
+
+                is AuthResult.Unauthorized -> {
+                    Toast.makeText(
+                        context,
+                        "You are not authorized",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                is AuthResult.UnknownError -> {
+                    Toast.makeText(
+                        context,
+                        "An unknown error",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +95,6 @@ fun LoginScreen(
                 .padding(top = 120.dp),
             text = stringResource(id = R.string.app_name),
             fontSize = 30.sp
-
         )
         Image(
             modifier = Modifier
@@ -70,11 +105,9 @@ fun LoginScreen(
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 60.dp),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            ),
-            value = viewModel.number,
-            onValueChange = viewModel::updateNumber,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            value = state.signInUsername,
+            onValueChange = { viewModel.onEvent(LoginScreenEvent.SignInUsernameChanged(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.enter_phone_number))
             }
@@ -82,18 +115,18 @@ fun LoginScreen(
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 20.dp),
-            value = viewModel.code,
-            onValueChange = viewModel::updateCode,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            value = state.signInPassword,
+            onValueChange = { viewModel.onEvent(LoginScreenEvent.SignInPasswordChanged(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.enter_sms))
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword)
+            }
         )
 
         StyledButton(
             modifier = Modifier
                 .padding(top = 20.dp),
-            onClick = {  }
+            onClick = { viewModel.onEvent(LoginScreenEvent.SignIn) }
         ) {
             Text(
                 modifier = Modifier,
@@ -108,8 +141,6 @@ fun LoginScreen(
                 .clickable { onNavigateTo(Screen.Register) },
             text = stringResource(id = R.string.register),
             fontSize = 14.sp
-
-
         )
     }
 }

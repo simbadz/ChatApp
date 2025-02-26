@@ -2,7 +2,8 @@
     <string name="app_name">ChatApp</string>
     <string name="enter_phone_number">Номер телефона</string>
     <string name="enter_sms">Введите код</string>
-    <string name="username">Имя пользователя</string>
+    <string name="name">Имя</string>
+    <string name="username">username</string>
     <string name="no_account_register">Зарегистрируйтесь</string>
     <string name="next">Войти</string>
     <string name="register">Зарегистрироваться</string>
