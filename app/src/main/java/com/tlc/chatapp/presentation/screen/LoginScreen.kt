@@ -138,7 +138,11 @@ fun LoginScreen(
         Text(
             modifier = Modifier
                 .padding(top = 20.dp)
-                .clickable { onNavigateTo(Screen.Register) },
+                .clickable { 
+                    // Pass the phone number to RegisterScreen when navigating
+                    val registerScreen = Screen.Register(phone = state.signInUsername)
+                    onNavigateTo(registerScreen)
+                },
             text = stringResource(id = R.string.register),
             fontSize = 14.sp
         )

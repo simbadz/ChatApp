@@ -43,33 +43,8 @@ class LoginScreenViewModel @Inject constructor(
                 signIn()
             }
 
-            is LoginScreenEvent.SignUpUsernameChanged -> {
-                state = state.copy(signUpUsername = event.value)
-            }
-
-            is LoginScreenEvent.SignUpPasswordChanged -> {
-                state = state.copy(signUpPassword = event.value)
-            }
-
-            LoginScreenEvent.SignUp -> {
-                signUp()
-            }
         }
 
-    }
-
-    private fun signUp() {
-        viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            val result = repository.register(
-                phone = state.signUpUsername,
-                name = state.signUpPassword,
-                username = state.signUpName
-            )
-            resultChannel.send(result)
-            state = state.copy(isLoading = false)
-
-        }
     }
 
     private fun signIn() {
@@ -77,11 +52,10 @@ class LoginScreenViewModel @Inject constructor(
             state = state.copy(isLoading = true)
             val result = repository.verifyCode(
                 phone = state.signInUsername,
-                code = state.signUpPassword
+                code = state.signInPassword
             )
             resultChannel.send(result)
             state = state.copy(isLoading = false)
-
         }
     }
 

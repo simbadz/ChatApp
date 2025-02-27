@@ -20,7 +20,7 @@ class AuthRepositoryImpl(
                     phone = phone
                 )
             )
-            sendPhone(phone)
+            AuthResult.Authorized()
         } catch (e: HttpException) {
             if (e.hashCode() == 401) {
                 AuthResult.Unauthorized()
@@ -41,7 +41,7 @@ class AuthRepositoryImpl(
                 )
             )
             prefs.edit()
-                .putString("jwt", response.token)
+                .putString("jwt", "Bearer ${response.token}")
                 .apply()
             AuthResult.Authorized()
         } catch (e: HttpException) {
@@ -79,7 +79,7 @@ class AuthRepositoryImpl(
     override suspend fun authenticate(): AuthResult<Unit> {
         return try {
             val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
-            api.authenticate("Bearer $token")
+            api.authenticate(token)
             AuthResult.Authorized()
         } catch (e: HttpException) {
             if (e.hashCode() == 401) {

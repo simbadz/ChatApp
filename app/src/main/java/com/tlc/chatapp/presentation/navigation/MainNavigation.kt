@@ -12,13 +12,13 @@ import kotlinx.serialization.Serializable
 
 sealed class Screen {
     @Serializable
-    data object Login: Screen()
+    data object Login : Screen()
 
     @Serializable
-    data object Register: Screen()
+    data class Register(val phone: String = "") : Screen()
 
     @Serializable
-    data object Main: Screen()
+    data object Main : Screen()
 }
 
 @Composable
@@ -38,15 +38,20 @@ fun MainNav(
                 }
             )
         }
-        composable<Screen.Register> {
-            RegisterScreen { navigateTo ->
-                navHostController.navigate(navigateTo)
-            }
+        composable<Screen.Register> { backStackEntry ->
+            val phone = backStackEntry.arguments?.getString("phone") ?: ""
+            RegisterScreen(
+                onNavigateTo = { navigateTo ->
+                    navHostController.navigate(navigateTo)
+                },
+                phone = phone
+            )
         }
         composable<Screen.Main> {
-            MainScreen { navigateTo ->
+            MainScreen({ navigateTo ->
                 navHostController.navigate(navigateTo)
             }
+            )
         }
     }
 }

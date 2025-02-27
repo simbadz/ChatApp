@@ -27,9 +27,11 @@ import com.tlc.chatapp.presentation.screen.viewModel.RegisterScreenViewModel
 
 @Composable
 fun RegisterScreen(
-    onNavigateTo: (Screen) -> Unit = {}
+    onNavigateTo: (Screen) -> Unit = {},
+    phone: String = ""
 ) {
     val viewModel = viewModel<RegisterScreenViewModel>()
+    viewModel.onEvent(RegisterScreenEvent.SignUpUsernameChanged(phone ))
     RegisterView(
         state = viewModel.state,
         onEvent = viewModel::onEvent,
@@ -58,7 +60,7 @@ fun RegisterView(
             value = state.phone,
             enabled = false,
             onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.PhoneUpdated(newPhone = ""))
+                onEvent(RegisterScreenEvent.SignUpUsernameChanged(""))
             },
             placeholder = {
                 Text(text = stringResource(id = R.string.enter_phone_number))
@@ -69,7 +71,7 @@ fun RegisterView(
             modifier = Modifier.padding(top = 20.dp),
             value = state.username,
             onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.UserNameUpdated(newValue))
+                onEvent(RegisterScreenEvent.SignUpNameChanged(newValue))
             },
             placeholder = {
                 Text(text = stringResource(id = R.string.name))
@@ -79,7 +81,7 @@ fun RegisterView(
             modifier = Modifier.padding(top = 20.dp),
             value = state.password,
             onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.PasswordUpdated(newValue)) },
+                onEvent(RegisterScreenEvent.SignUpPasswordChanged(newValue)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.username))
             },

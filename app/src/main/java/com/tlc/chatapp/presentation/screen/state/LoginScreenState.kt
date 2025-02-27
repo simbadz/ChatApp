@@ -6,9 +6,9 @@ sealed class LoginScreenEvent {
 //    data class PhoneUpdated(val newPhone: String) : LoginScreenEvent()
 //    data class PasswordUpdated(val newPassword: String) : LoginScreenEvent()
 
-    data class SignUpUsernameChanged(val value: String): LoginScreenEvent()
-    data class SignUpPasswordChanged(val value: String): LoginScreenEvent()
-    object SignUp: LoginScreenEvent()
+//    data class SignUpUsernameChanged(val value: String): LoginScreenEvent()
+//    data class SignUpPasswordChanged(val value: String): LoginScreenEvent()
+//    object SignUp: LoginScreenEvent()
 
     data class SignInUsernameChanged(val value: String): LoginScreenEvent()
     data class SignInPasswordChanged(val value: String): LoginScreenEvent()
