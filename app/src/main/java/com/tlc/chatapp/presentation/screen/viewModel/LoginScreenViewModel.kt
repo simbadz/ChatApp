@@ -34,17 +34,13 @@ class LoginScreenViewModel @Inject constructor(
             is LoginScreenEvent.SignInUsernameChanged -> {
                 state = state.copy(signInUsername = event.value)
             }
-
             is LoginScreenEvent.SignInPasswordChanged -> {
                 state = state.copy(signInPassword = event.value)
             }
-
             is LoginScreenEvent.SignIn -> {
                 signIn()
             }
-
         }
-
     }
 
     private fun signIn() {
@@ -65,56 +61,9 @@ class LoginScreenViewModel @Inject constructor(
             val result = repository.authenticate()
             resultChannel.send(result)
             state = state.copy(isLoading = false)
-
         }
     }
 }
-
-
-//class LoginScreenViewModel: ViewModel() {
-//    var number by mutableStateOf("")
-//        private set
-//
-//    var code by mutableStateOf("")
-//        private set
-//
-//    var phone by mutableStateOf("")
-//        private set
-//
-//    fun updateNumber(number: String) {
-//        this.number = number
-//    }
-//
-//    fun updateCode(code: String) {
-//        this.code = code
-//    }
-//
-//
-//    private val api = RetrofitInstance.api
-//
-//    private val _authState = MutableLiveData<AuthState>(AuthState.Idle)
-//    val authState: LiveData<AuthState> = _authState
-//
-//
-//
-//
-//
-//    fun sendPhone(phone: String) {
-//        viewModelScope.launch {
-//            _authState.value = AuthState.Loading
-//
-//            }
-//        }
-//    }
-//
-//    sealed class AuthState {
-//        object Idle : AuthState()
-//        object Loading : AuthState()
-//        data class CodeSent(val phone: String) : AuthState()
-//        data class Error(val message: String) : AuthState()
-//        object Success : AuthState()
-//    }
-
 
 
 

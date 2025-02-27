@@ -2,7 +2,6 @@ package com.tlc.chatapp.presentation.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -26,27 +24,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavDestinationDsl
-import androidx.navigation.Navigator
 import com.tlc.chatapp.R
-import com.tlc.chatapp.data.auth.AuthRepository
 import com.tlc.chatapp.data.auth.AuthResult
 import com.tlc.chatapp.presentation.component.StyledButton
 import com.tlc.chatapp.presentation.navigation.Screen
 import com.tlc.chatapp.presentation.screen.state.LoginScreenEvent
-import com.tlc.chatapp.presentation.screen.state.LoginScreenState
-import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
 import com.tlc.chatapp.presentation.screen.viewModel.LoginScreenViewModel
-import com.tlc.chatapp.presentation.ui.theme.PrimaryPinkBlended
-import com.tlc.chatapp.presentation.ui.theme.PrimaryYellow
-import com.tlc.chatapp.presentation.ui.theme.PrimaryYellowLight
 
 @Composable
 fun LoginScreen(
-//    state: LoginScreenState = LoginScreenState(),
     onNavigateTo: (Screen) -> Unit = {},
-    onEvent: (LoginScreenEvent) -> Unit = {},
     viewModel: LoginScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state

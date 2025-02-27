@@ -7,44 +7,36 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlc.chatapp.R
 import com.tlc.chatapp.presentation.component.StyledButton
 import com.tlc.chatapp.presentation.navigation.Screen
-import com.tlc.chatapp.presentation.screen.state.LoginScreenState
 import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
-import com.tlc.chatapp.presentation.screen.state.RegisterScreenState
 import com.tlc.chatapp.presentation.screen.viewModel.RegisterScreenViewModel
 
 @Composable
 fun RegisterScreen(
     onNavigateTo: (Screen) -> Unit = {},
+    viewModel: RegisterScreenViewModel = hiltViewModel(),
     phone: String = ""
 ) {
-    val viewModel = viewModel<RegisterScreenViewModel>()
-    viewModel.onEvent(RegisterScreenEvent.SignUpUsernameChanged(phone ))
-    RegisterView(
-        state = viewModel.state,
-        onEvent = viewModel::onEvent,
-        onNavigateTo = onNavigateTo
-    )
-}
+    val state = viewModel.state
+    val context = LocalContext.current
 
-@Composable
-fun RegisterView(
-    state: RegisterScreenState = RegisterScreenState(),
-    onEvent: (RegisterScreenEvent) -> Unit = {},
-    onNavigateTo: (Screen) -> Unit = {}
-)  {
+    // Add this to set the phone number in the state when the screen is created
+    LaunchedEffect(phone) {
+        viewModel.onEvent(RegisterScreenEvent.SignUpPhoneChanged(phone))
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -57,11 +49,9 @@ fun RegisterView(
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 150.dp),
-            value = state.phone,
+            value = state.signUpPhone,  // Changed from phone to state.signUpPhone
             enabled = false,
-            onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.SignUpUsernameChanged(""))
-            },
+            onValueChange = { },
             placeholder = {
                 Text(text = stringResource(id = R.string.enter_phone_number))
             }
@@ -69,29 +59,24 @@ fun RegisterView(
 
         OutlinedTextField(
             modifier = Modifier.padding(top = 20.dp),
-            value = state.username,
-            onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.SignUpNameChanged(newValue))
-            },
+            value = state.signUpName,  // This stays as name field
+            onValueChange = { viewModel.onEvent(RegisterScreenEvent.SignUpNameChanged(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.name))
             }
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 20.dp),
-            value = state.password,
-            onValueChange = { newValue ->
-                onEvent(RegisterScreenEvent.SignUpPasswordChanged(newValue)) },
+            value = state.signUpUsername,  // This stays as username field
+            onValueChange = { viewModel.onEvent(RegisterScreenEvent.SignUpUsernameChanged(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.username))
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
         StyledButton(
             modifier = Modifier.padding(top = 20.dp),
-            onClick = {
-                onNavigateTo(Screen.Login)
-            }
+            onClick = { viewModel.onEvent(RegisterScreenEvent.SignUp) }
         ) {
             Text(
                 text = stringResource(id = R.string.register),
@@ -102,8 +87,8 @@ fun RegisterView(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun RegisterScreenPreview() {
-    RegisterView()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun RegisterScreenPreview() {
+//    RegisterView()
+//}

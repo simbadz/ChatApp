@@ -8,12 +8,3 @@ data class AuthState (
     val signInPassword: String = "",
     val signUpName: String = ""
 )
-
-
-
-
-//sealed class AuthState {
-//    object Authorized: AuthState()
-//    object NotAuthorized: AuthState()
-//    object Initial: AuthState()
-//}
