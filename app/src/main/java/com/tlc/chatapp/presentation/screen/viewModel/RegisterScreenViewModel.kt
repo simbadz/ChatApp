@@ -27,13 +27,13 @@ class RegisterScreenViewModel @Inject constructor(
 
     fun onEvent(event: RegisterScreenEvent) {
         when (event) {
-            is RegisterScreenEvent.SignUpUsernameChanged -> {
+            is RegisterScreenEvent.SignUpPhoneNumber -> {
+                state = state.copy(signUpPhoneNumber = event.value)
+            }
+            is RegisterScreenEvent.SignUpUsername -> {
                 state = state.copy(signUpUsername = event.value)
             }
-            is RegisterScreenEvent.SignUpPasswordChanged -> {
-                state = state.copy(signUpPassword = event.value)
-            }
-            is RegisterScreenEvent.SignUpNameChanged -> {
+            is RegisterScreenEvent.SignUpName -> {
                 state = state.copy(signUpName = event.value)
             }
             RegisterScreenEvent.SignUp -> {
@@ -46,9 +46,9 @@ class RegisterScreenViewModel @Inject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val result = repository.register(
-                phone = state.signUpUsername,
-                name = state.signUpPassword,
-                username = state.signUpName
+                phone = state.signUpPhoneNumber,
+                name = state.signUpName,
+                username = state.signUpUsername
             )
             resultChannel.send(result)
             state = state.copy(isLoading = false)

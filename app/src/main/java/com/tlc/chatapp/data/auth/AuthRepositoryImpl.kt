@@ -41,7 +41,7 @@ class AuthRepositoryImpl(
                 )
             )
             prefs.edit()
-                .putString("jwt", "Bearer ${response.token}")
+                .putString("jwt", "Bearer ${response.refresh_token}")
                 .apply()
             AuthResult.Authorized()
         } catch (e: HttpException) {

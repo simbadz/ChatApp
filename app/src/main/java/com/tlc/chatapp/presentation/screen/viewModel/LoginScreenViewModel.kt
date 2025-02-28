@@ -31,8 +31,8 @@ class LoginScreenViewModel @Inject constructor(
 
     fun onEvent(event: LoginScreenEvent) {
         when (event) {
-            is LoginScreenEvent.SignInUsernameChanged -> {
-                state = state.copy(signInUsername = event.value)
+            is LoginScreenEvent.SignInPhoneNumberChanged -> {
+                state = state.copy(signInPhoneNumber = event.value)
             }
             is LoginScreenEvent.SignInPasswordChanged -> {
                 state = state.copy(signInPassword = event.value)
@@ -47,7 +47,7 @@ class LoginScreenViewModel @Inject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val result = repository.verifyCode(
-                phone = state.signInUsername,
+                phone = state.signInPhoneNumber,
                 code = state.signInPassword
             )
             resultChannel.send(result)

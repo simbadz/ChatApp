@@ -1,10 +1,11 @@
 package com.tlc.chatapp.data.auth
 
-data class AuthState (
+data class AuthState(
     val isLoading: Boolean = false,
     val signUpUsername: String = "",
     val signUpPassword: String = "",
-    val signInUsername: String = "",
+    val signInPhoneNumber: String = "",
+    val signUpPhoneNumber: String = "",
     val signInPassword: String = "",
     val signUpName: String = ""
 )

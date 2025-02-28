@@ -1,5 +1,6 @@
 package com.tlc.chatapp.presentation.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlc.chatapp.R
+import com.tlc.chatapp.data.auth.AuthResult
 import com.tlc.chatapp.presentation.component.StyledButton
 import com.tlc.chatapp.presentation.navigation.Screen
 import com.tlc.chatapp.presentation.screen.state.RegisterScreenEvent
@@ -32,9 +34,9 @@ fun RegisterScreen(
     val state = viewModel.state
     val context = LocalContext.current
 
-    // Add this to set the phone number in the state when the screen is created
-    LaunchedEffect(phone) {
-        viewModel.onEvent(RegisterScreenEvent.SignUpPhoneChanged(phone))
+    // Set phone number first
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(RegisterScreenEvent.SignUpPhoneNumber(phone))
     }
 
     Column(
@@ -49,7 +51,7 @@ fun RegisterScreen(
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 150.dp),
-            value = state.signUpPhone,  // Changed from phone to state.signUpPhone
+            value = state.signUpPhoneNumber,
             enabled = false,
             onValueChange = { },
             placeholder = {
@@ -59,16 +61,16 @@ fun RegisterScreen(
 
         OutlinedTextField(
             modifier = Modifier.padding(top = 20.dp),
-            value = state.signUpName,  // This stays as name field
-            onValueChange = { viewModel.onEvent(RegisterScreenEvent.SignUpNameChanged(it)) },
+            value = state.signUpName,
+            onValueChange = { viewModel.onEvent(RegisterScreenEvent.SignUpName(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.name))
             }
         )
         OutlinedTextField(
             modifier = Modifier.padding(top = 20.dp),
-            value = state.signUpUsername,  // This stays as username field
-            onValueChange = { viewModel.onEvent(RegisterScreenEvent.SignUpUsernameChanged(it)) },
+            value = state.signUpUsername,
+            onValueChange = { viewModel.onEvent(RegisterScreenEvent.SignUpUsername(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.username))
             },

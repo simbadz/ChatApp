@@ -25,5 +25,9 @@ data class VerifyRequest(val phone: String, val code: String)
 data class Register(val phone: String, val name: String,val username: String)
 
 data class ApiResponse(val message: String)
-//data class TokenRequest(val acess_token: String, val refresh_token: String)
-data class TokenRequest(val token: String)
+data class TokenRequest(
+    val access_token: String,
+    val refresh_token: String,
+    val user_id: String
+)
+//data class TokenRequest(val token: String)

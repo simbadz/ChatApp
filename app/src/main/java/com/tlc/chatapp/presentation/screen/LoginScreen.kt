@@ -93,8 +93,8 @@ fun LoginScreen(
         OutlinedTextField(
             modifier = Modifier.padding(top = 60.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            value = state.signInUsername,
-            onValueChange = { viewModel.onEvent(LoginScreenEvent.SignInUsernameChanged(it)) },
+            value = state.signInPhoneNumber,
+            onValueChange = { viewModel.onEvent(LoginScreenEvent.SignInPhoneNumberChanged(it)) },
             placeholder = {
                 Text(text = stringResource(id = R.string.enter_phone_number))
             }
@@ -126,8 +126,7 @@ fun LoginScreen(
             modifier = Modifier
                 .padding(top = 20.dp)
                 .clickable { 
-                    // Pass the phone number to RegisterScreen when navigating
-                    val registerScreen = Screen.Register(phone = state.signInUsername)
+                    val registerScreen = Screen.Register(phone = state.signInPhoneNumber)
                     onNavigateTo(registerScreen)
                 },
             text = stringResource(id = R.string.register),
