@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import com.tlc.chatapp.data.auth.AuthApi
 import com.tlc.chatapp.data.auth.AuthRepository
 import com.tlc.chatapp.data.auth.AuthRepositoryImpl
+import com.tlc.chatapp.data.auth.TokenManager
+import com.tlc.chatapp.data.auth.TokenManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,16 +22,31 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }).build()
+    private const val BASE_URL = "https://plannerok.ru/api/v1/users/"
 
-    @get:Provides
+    @Provides
     @Singleton
-    val api: AuthApi by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://plannerok.ru/api/v1/users/")
+    fun provideOkHttpClient(tokenManager: TokenManager): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val request = original.newBuilder()
+                    .header("Authorization", "Bearer ${tokenManager.getAccessToken()}")
+                    .method(original.method, original.body)
+                    .build()
+                chain.proceed(request)
+            }
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(client: OkHttpClient): AuthApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -44,9 +61,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideTokenManager(prefs: SharedPreferences): TokenManager {
+        return TokenManagerImpl(prefs)
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthRepository(api: AuthApi, prefs: SharedPreferences): AuthRepository {
         return AuthRepositoryImpl(api, prefs)
     }
 }
-
 

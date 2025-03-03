@@ -1,28 +1,42 @@
 package com.tlc.chatapp.data.auth
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 
+interface TokenManager {
+    fun saveAccessToken(token: String)
+    fun getAccessToken(): String
+    fun clearTokens()
+    fun isLoggedIn(): Boolean
+}
 
+class TokenManagerImpl @Inject constructor(
+    private val prefs: SharedPreferences
+) : TokenManager {
 
-private val Context.dataStore by preferencesDataStore("user_prefs")
-
-class DataStoreManager(private val context: Context) {
     companion object {
-        private val TOKEN_KEY = stringPreferencesKey("jwt_token")
+        private const val ACCESS_TOKEN = "access_token"
     }
 
-    suspend fun saveToken(token: String) {
-        context.dataStore.edit { prefs ->
-            prefs[TOKEN_KEY] = token
-        }
+    override fun saveAccessToken(token: String) {
+        prefs.edit().putString(ACCESS_TOKEN, token).apply()
     }
 
-    suspend fun getToken(): String? {
-        return context.dataStore.data.first()[TOKEN_KEY]
+    override fun getAccessToken(): String {
+        return prefs.getString(ACCESS_TOKEN, "") ?: ""
+    }
+
+    override fun clearTokens() {
+        prefs.edit().remove(ACCESS_TOKEN).apply()
+    }
+
+    override fun isLoggedIn(): Boolean {
+        return getAccessToken().isNotEmpty()
     }
 }

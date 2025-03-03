@@ -22,9 +22,8 @@ interface AuthApi {
 
 data class PhoneRequest(val phone: String)
 data class VerifyRequest(val phone: String, val code: String)
-data class Register(val phone: String, val name: String,val username: String)
+data class Register(val phone: String, val name: String, val username: String)
 
-data class TokenResponse(val token: String)
 data class TokenRequest(
     val access_token: String,
     val refresh_token: String,
