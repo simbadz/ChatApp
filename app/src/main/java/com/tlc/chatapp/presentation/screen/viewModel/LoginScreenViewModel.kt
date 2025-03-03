@@ -46,11 +46,18 @@ class LoginScreenViewModel @Inject constructor(
     private fun signIn() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
+            
+            val sendPhoneResult = repository.sendPhone(
+                phone = state.signInPhoneNumber
+            )
+            resultChannel.send(sendPhoneResult)
+
             val result = repository.verifyCode(
                 phone = state.signInPhoneNumber,
                 code = state.signInPassword
             )
             resultChannel.send(result)
+            
             state = state.copy(isLoading = false)
         }
     }

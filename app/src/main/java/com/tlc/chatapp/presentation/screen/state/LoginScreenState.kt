@@ -6,4 +6,3 @@ sealed class LoginScreenEvent {
     data class SignInPasswordChanged(val value: String): LoginScreenEvent()
     object SignIn: LoginScreenEvent()
 }
-

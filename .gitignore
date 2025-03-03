@@ -1,11 +1,44 @@
-*.iml
-.gradle
+# Gradle files
+.gradle/
+build/
+
+# Local configuration files
 /local.properties
-/.idea
+
+# Android Studio and IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Keystore files
+*.jks
+*.keystore
+
+# Log files
+*.log
+
+# OS-specific files
 .DS_Store
-/build
+Thumbs.db
+
+# Build directories
+app/build/
+*/build/
+
+# Proguard configuration files
+proguard-rules.pro
+
+# Miscellaneous
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Android NDK
+ndkBuild/
+
 /captures
 .externalNativeBuild
 .cxx
-local.properties
 .aider*
